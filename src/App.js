@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
-function App() {
+import ApiObj from "./FetchedApi"; // API verileri
+import ApodComponent from "./Apod"; // Apod verileir
+
+const App = () => {
+  const [apodData, setapodData] = useState([]);
+
+  useEffect(async () => {
+    // todo get data from api..
+    const fetchData = await ApiObj.fetchData(5);
+    setapodData(fetchData);
+  }, []);
+
   return (
     <div className="App">
-      <p>
-        NASA uygulamasını yapmak için README.md dosyasıdaki talimatları takip edin
-		İyi eğlenceler! <span role="img" aria-label='go!'>🚀</span>!
-      </p>
+      apodData ?<p>Loading...</p>
     </div>
   );
-}
+};
 
 export default App;
