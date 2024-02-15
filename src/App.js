@@ -1,21 +1,47 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import Accordions from "./Components/Acordion";
 
-import ApiObj from "./FetchedApi"; // API verileri
-import ApodComponent from "./Apod"; // Apod verileir
+// API verileri
+import ApiObj from "./FetchedApi";
+
+// Apod verileri
+import ApodComponent from "./Apod";
 
 const App = () => {
-  const [apodData, setapodData] = useState([]);
+  const [apodData, setApodData] = useState([]);
 
-  useEffect(async () => {
-    // todo get data from api..
-    const fetchData = await ApiObj.fetchData(5);
-    setapodData(fetchData);
+  useEffect(() => {
+    let counter = prompt("How many media would you like to see ? ");
+    const fetchApodData = async () => {
+      try {
+        const fetchedData = await ApiObj.fetchData(counter); // API'den veri çek
+        setApodData(fetchedData);
+      } catch (error) {
+        console.error("Error fetching APOD data:", error);
+      }
+    };
+
+    fetchApodData();
   }, []);
 
   return (
     <div className="App">
-      apodData ?<p>Loading...</p>
+      {apodData.length > 1 ? (
+        apodData.map((item, index) => (
+          <Accordions key={index} apodData={item} />
+        ))
+      ) : (
+        <p>{apodData.msg}</p>
+      )}
+
+      {/* {apodData.length > 1 ? (
+        apodData.map((item, index) => (
+          <ApodComponent key={index} apodData={item} />
+        ))
+      ) : (
+        <p>{apodData.msg}</p>
+      )} */}
     </div>
   );
 };
